@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <main>
+            {% for catalog in object_list %}
+            <a href="{% url 'shop:category' catalog.id %}">{{ catalog.category }}</a>
+            {% endfor %}
+        </main>
+    </body>
+</html>
