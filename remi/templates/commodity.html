@@ -4,7 +4,10 @@
     </head>
     <body>
         <main>
-            {{ object }}
+                {{ object.name }}
+                <form method="post">
+                    <a href="{% url 'shop:add_commodity' commodity.id %}">Добавить в корзину</a>
+                </form>
         </main>
     </body>
 </html>

@@ -1,9 +1,12 @@
 from django.urls import path
-from .views import CatalogView, CommodityView, CategoryView
+from .views import BasketAddView, CatalogView, CommodityView, CategoryView, BasketView
 
 app_name = 'shop'
 
 urlpatterns = [
     path('catalog/', CatalogView.as_view()),
-    path('catalog/<int:id>/', CategoryView.as_view(), name='category'),
-]
+    path('catalog/<int:pk>/', CategoryView.as_view(), name='category'),
+    path('commodity/<int:pk>/', CommodityView.as_view(), name='commodity'),
+    path('commodity/<int:pk>/add', BasketAddView.as_view(),name='add_commodity'),
+    path('basket/', BasketView.as_view(), name='basket'),
+    ]

@@ -25,8 +25,8 @@ class Commodity(models.Model):
                                  on_delete=models.CASCADE,
                                  related_name='commodities')
     name = models.CharField(max_length=20)
-    image = models.ImageField(upload_to='uploads/images')
-    specification = models.FileField(upload_to='uploads/specifications')
+    image = models.ImageField(upload_to='data/uploads/images')
+    specification = models.FileField(upload_to='data/uploads/specifications')
     price = models.FloatField(max_length=4)
 
 class Basket(models.Model):
@@ -47,3 +47,4 @@ class Share(models.Model):
     condition = models.CharField(max_length=40)
     good = models.ForeignKey(Commodity,
                              on_delete=models.CASCADE)
+

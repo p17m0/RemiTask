@@ -5,7 +5,7 @@
     <body>
         <main>
             {% for commodity in commodities %}
-                {{ commodity.name }}
+                <a href="{% url 'shop:commodity' commodity.id %}">{{ commodity.name }}</a>
             {% endfor %}
         </main>
     </body>
