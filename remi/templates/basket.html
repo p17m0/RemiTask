@@ -5,7 +5,10 @@
     <body>
         <main>
             {% for commodity in basket %}
-                {{ commodity.name }}
+                {{ commodity.commodity.name }}
+                <button>
+                    <a href="{% url 'shop:del_commodity' commodity.id %}">Удалить из корзины</a>
+                </button>
             {% endfor %}
         </main>
     </body>

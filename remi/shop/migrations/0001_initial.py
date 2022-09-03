@@ -41,12 +41,4 @@ class Migration(migrations.Migration):
                 ('good', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.commodity')),
             ],
         ),
-        migrations.CreateModel(
-            name='Basket',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('commodity', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.commodity')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
     ]

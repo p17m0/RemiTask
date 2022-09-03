@@ -4,9 +4,18 @@
     </head>
     <body>
         <main>
-                {{ object.name }}
-                <form method="post">
-                    <a href="{% url 'shop:add_commodity' commodity.id %}">Добавить в корзину</a>
+                {{ commodity.name }}
+                <form action="" method="get">
+                    {% csrf_token %}
+                    {% if not in_basket %}
+                    <button>
+                     <a href="{% url 'shop:add_commodity' commodity.id %}">Добавить в корзину</a>
+                    </button>
+                    {% else %}
+                    <button>
+                        <a href="{% url 'shop:del_commodity' commodity.id %}">Удалить из корзины</a>
+                    </button>
+                    {% endif %}
                 </form>
         </main>
     </body>

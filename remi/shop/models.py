@@ -1,11 +1,7 @@
-from unicodedata import category
 from django.db import models
 from django.contrib.auth import get_user_model
-# Create your models here.
-# - каталог (иерархическое дерево категорий)
-# - товар связанный с категорией каталога, например с изображением и «спецификацией» (Filefield)
-# - корзина \ заказ набор товаров, изменение статусов заказов, завершение
-# - промо абстракция для объединения между собой товаров в “акцию”, с дополнительными условиями.
+
+
 User = get_user_model()
 
 class Catalog(models.Model):
@@ -37,6 +33,12 @@ class Basket(models.Model):
                              on_delete=models.CASCADE)
     commodity = models.ForeignKey(Commodity,
                                   on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'commodity'],
+                                    name='unique_commodity')
+        ]
 
 class Share(models.Model):
     """

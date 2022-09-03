@@ -10,7 +10,7 @@ class CatalogView(generic.ListView):
 
 class BasketView(View):
     def get(self, request):
-        basket = Basket.objects.filter(user=request.user)
+        basket = Basket.objects.filter(user=request.user.id)
         context = {
             'basket': basket,
         }
@@ -22,6 +22,12 @@ class BasketAddView(View):
         Basket.objects.create(user=request.user, commodity=commodity)
         return redirect('shop:commodity', pk=pk)
 
+class BasketDelView(View):
+    def get(self, request, pk):
+        commodity = Commodity.objects.get(id=pk)
+        Basket.objects.get(user=request.user, commodity=commodity).delete()
+        return redirect('shop:commodity', pk=pk)
+
 class CategoryView(View):
     def get(self, request, pk):
         category = Catalog.objects.get(id=pk)
@@ -31,7 +37,13 @@ class CategoryView(View):
         }
         return render(request, 'category.html', context)
 
-class CommodityView(generic.DetailView):
-    model = Commodity
-    template_name = 'commodity.html'
+class CommodityView(View):
+    def get(self, request, pk):
+        commodity = Commodity.objects.get(id=pk)
+        in_basket = bool(Basket.objects.filter(user=request.user, commodity=commodity))
+        context = {
+            'commodity': commodity,
+            'in_basket': in_basket,
+        }
+        return render(request, 'commodity.html', context)
 
