@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -10,7 +11,19 @@ class Catalog(models.Model):
     """
     category = models.CharField(max_length=25)
 
+class Subcategory(models.Model):
+    """
+    Подкатегория в каталоге.
+    """
+    category = models.ForeignKey(Catalog, on_delete=models.CASCADE)
+    subcategory_name = models.CharField(max_length=30)
 
+    class Meta:
+        contstraints = [
+            models.UniqueConstraint(fields=['category',
+                                            'subcategory_name'],
+                                            name='unique_subcategory')
+        ]
 
 class Commodity(models.Model):
     """
