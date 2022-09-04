@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+{{ commodity.name }}
+    {% if not in_basket %}
+    <button>
+        <a href="{% url 'shop:add_commodity' commodity.id %}">Добавить в корзину</a>
+    </button>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for catalog in object_list %}
+    <a href="{% url 'shop:category' catalog.id %}">{{ catalog.category }}</a>
+{% endfor %}
+<a href="{% url 'shop:basket' %}">
+    Корзина
+{% endblock content %}

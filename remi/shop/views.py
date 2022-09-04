@@ -6,7 +6,7 @@ from .forms import *
 
 class CatalogView(generic.ListView):
     model = Catalog
-    template_name = 'catalog.html'
+    template_name = 'shop/catalog.html'
 
 class BasketView(View):
     def get(self, request):
@@ -14,7 +14,7 @@ class BasketView(View):
         context = {
             'basket': basket,
         }
-        return render(request, 'basket.html', context)
+        return render(request, 'shop/basket.html', context)
 
 class BasketAddView(View):
     def get(self, request, pk):
@@ -26,7 +26,7 @@ class BasketDelView(View):
     def get(self, request, pk):
         commodity = Commodity.objects.get(id=pk)
         Basket.objects.get(user=request.user, commodity=commodity).delete()
-        return redirect('shop:commodity', pk=pk)
+        return redirect('shop:basket', pk=pk)
 
 class CategoryView(View):
     def get(self, request, pk):
@@ -35,7 +35,7 @@ class CategoryView(View):
         context = {
             'commodities': commodities,
         }
-        return render(request, 'category.html', context)
+        return render(request, 'shop/category.html', context)
 
 class CommodityView(View):
     def get(self, request, pk):
@@ -45,5 +45,5 @@ class CommodityView(View):
             'commodity': commodity,
             'in_basket': in_basket,
         }
-        return render(request, 'commodity.html', context)
+        return render(request, 'shop/commodity.html', context)
 

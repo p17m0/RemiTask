@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for product in basket %}
+    {{ product.commodity.name }}
+    {% if basket %}
+    <button>
+        <a href="{% url 'shop:del_commodity' product.commodity.id %}">Удалить из корзины</a>
+    </button>
+    {% endif %}
+{% endfor %}
+{% endblock content %}
