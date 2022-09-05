@@ -62,7 +62,12 @@ class OrderView(View):
     def post(self, request):
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
-            order.save()
+            basketitems = BasketItem.objects.filter(user=request.user)
+            for item in basketitems:
+                order = form.save(commit=False)
+                order.commodity = item.commodity
+                order.user = request.user
+                order.save()
+            BasketItem.objects.filter(user=request.user).delete()
             return redirect('shop:order')
         return redirect('shop:order')

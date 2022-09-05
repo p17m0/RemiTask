@@ -86,9 +86,13 @@ class Share(models.Model):
         return self.share
 
 class Order(models.Model):
-    basketitem = models.ForeignKey(BasketItem,
+    user = models.ForeignKey(User, 
+                             on_delete=models.CASCADE,
+                             related_name='orders')
+    commodity = models.ForeignKey(Commodity,
                                    on_delete=models.CASCADE,
-                                   related_name='items')
+                                   related_name='orders')
+    quantity = models.PositiveIntegerField(default=1)
     address = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)

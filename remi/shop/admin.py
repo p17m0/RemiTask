@@ -32,6 +32,6 @@ class BasketItemAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class BasketAdmin(admin.ModelAdmin):
-    list_display = ('basketitem', 'created', 'address')
+    list_display = ('commodity', 'created', 'address')
     list_filter = ('created', )
     search_fields = ('created', )

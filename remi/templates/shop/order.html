@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+  {% for basketitem in basketitems %}
+   {{ basketitem }}
+  {% endfor %}
   <form method="post">
     {% csrf_token %}
-    {{ form }}
+    {% for field in form %}
+     {{ field.name }}{{ field }}
+    {% endfor %} 
     <button>
         оформить заказ
     </button>
