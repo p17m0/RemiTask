@@ -1,16 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import generic, View
-from .models import (
-    Catalog,
-    BasketItem,
-    Commodity,
-)
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View, generic
+
 from .forms import OrderForm
+from .models import BasketItem, Catalog, Commodity
 
 
 class CatalogView(generic.ListView):
     model = Catalog
     template_name = 'shop/catalog.html'
+
 
 class BasketView(View):
     def get(self, request):
@@ -25,6 +23,7 @@ class BasketView(View):
         BasketItem.objects.get(user=request.user, commodity=commodity).delete()
         return redirect('shop:basket')
 
+
 class CategoryView(View):
     def get(self, request, pk):
         category = get_object_or_404(Catalog, pk=pk)
@@ -34,10 +33,12 @@ class CategoryView(View):
         }
         return render(request, 'shop/category.html', context)
 
+
 class CommodityView(View):
     def get(self, request, pk):
         commodity = get_object_or_404(Commodity, pk=pk)
-        in_basket = BasketItem.objects.filter(user=request.user, commodity=commodity).exists()
+        in_basket = BasketItem.objects.filter(user=request.user,
+                                              commodity=commodity).exists()
         context = {
             'commodity': commodity,
             'in_basket': in_basket,
@@ -49,6 +50,7 @@ class CommodityView(View):
         BasketItem.objects.create(user=request.user, commodity=commodity)
         return redirect('shop:commodity', pk=pk)
 
+
 class OrderView(View):
     def get(self, request):
         basketitems = BasketItem.objects.filter(user=request.user)
@@ -58,7 +60,7 @@ class OrderView(View):
             'basketitems': basketitems,
         }
         return render(request, 'shop/order.html', context)
-    
+
     def post(self, request):
         form = OrderForm(request.POST)
         if form.is_valid():

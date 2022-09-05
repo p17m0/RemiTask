@@ -1,12 +1,8 @@
-from ast import Sub
-import re
-from unicodedata import category
-from wsgiref.simple_server import demo_app
-from django.db import models
 from django.contrib.auth import get_user_model
-
+from django.db import models
 
 User = get_user_model()
+
 
 class Catalog(models.Model):
     """
@@ -16,6 +12,7 @@ class Catalog(models.Model):
 
     def __str__(self):
         return self.category
+
 
 class Subcategory(models.Model):
     """
@@ -29,11 +26,12 @@ class Subcategory(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['category',
                                             'subcategory_name'],
-                                            name='unique_subcategory')
+                                    name='unique_subcategory')
         ]
-    
+
     def __str__(self):
         return self.subcategory_name
+
 
 class Commodity(models.Model):
     """
@@ -53,9 +51,10 @@ class Commodity(models.Model):
     def __str__(self):
         return self.name
 
+
 class BasketItem(models.Model):
     """
-    Корзина \ заказ набор товаров, изменение статусов заказов, завершение.
+    Корзина заказ набор товаров, изменение статусов заказов, завершение.
     """
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
@@ -75,6 +74,7 @@ class BasketItem(models.Model):
     def __str__(self):
         return self.commodity.name
 
+
 class Share(models.Model):
     """
     Промо абстракция для объединения между собой товаров в “акцию”,
@@ -83,21 +83,22 @@ class Share(models.Model):
     share = models.IntegerField()
     condition = models.CharField(max_length=40)
     commodity = models.ForeignKey(Commodity,
-                             on_delete=models.CASCADE)
+                                  on_delete=models.CASCADE)
 
     def __str__(self):
         return self.share
+
 
 class Order(models.Model):
     """
     Оформление заказа покупателя.
     """
-    user = models.ForeignKey(User, 
+    user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='orders')
     commodity = models.ForeignKey(Commodity,
-                                   on_delete=models.CASCADE,
-                                   related_name='orders')
+                                  on_delete=models.CASCADE,
+                                  related_name='orders')
     quantity = models.PositiveIntegerField(default=1)
     address = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
@@ -105,4 +106,3 @@ class Order(models.Model):
 
     def __str__(self):
         return self.address
-
