@@ -31,7 +31,6 @@ python -m venv env
 source env/bin/activate
 ```
 
-
 * Перейти в директoрию и установить зависимости из файла requirements.txt:
 
 ```bash
@@ -49,32 +48,4 @@ python manage.py migrate
 
 ```bash
 python manage.py runserver
-```
-
-## Запуск проекта в Docker контейнере
-
-* Установите Docker.
-
-Параметры запуска описаны в файлах `docker-compose.yml` и `nginx.conf` которые находятся в директории `infra/`.При необходимости добавьте/измените адреса проекта в файле `nginx.conf`
-
-* Запустите docker compose:
-
-```bash
-docker-compose up -d --build
-```
-
-> После сборки появляются 1 контейнера:
->
-> 1. контейнер приложения **backend**
-
-* Примените миграции:
-
-```bash
-docker-compose exec backend python manage.py migrate
-```
-
-* Создайте администратора:
-
-```bash
-docker-compose exec backend python manage.py createsuperuser
 ```
