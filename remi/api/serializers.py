@@ -1,11 +1,6 @@
 from rest_framework import serializers
-from shop.models import (User,
-                         Catalog,
-                         Subcategory,
-                         Commodity,
-                         BasketItem,
-                         Order,
-                         Share,)
+from shop.models import (BasketItem, Catalog, Commodity, Order, Share,
+                         Subcategory, User)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,7 +23,7 @@ class SubcategorySerializer(serializers.ModelSerializer):
 
 class CommoditySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Order
+        model = Commodity
         fields = '__all__'
 
 
@@ -40,7 +35,7 @@ class BasketItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BasketItem
+        model = Order
         fields = '__all__'
 
 

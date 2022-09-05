@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-{% for commodity in commodities %}
-    <a href="{% url 'shop:commodity' commodity.id %}">{{ commodity.name }}</a>
-{% endfor %}
-{% endblock content %}
