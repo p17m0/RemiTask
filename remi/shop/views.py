@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic, View
 from .models import (
     Catalog,
@@ -20,14 +20,14 @@ class BasketView(View):
         }
         return render(request, 'shop/basket.html', context)
 
-    def post(self, request, pk):
-        commodity = Commodity.objects.get(id=pk)
+    def delete(self, request, pk):
+        commodity = get_object_or_404(Commodity, pk=pk)
         BasketItem.objects.get(user=request.user, commodity=commodity).delete()
         return redirect('shop:basket')
 
 class CategoryView(View):
     def get(self, request, pk):
-        category = Catalog.objects.get(id=pk)
+        category = get_object_or_404(Catalog, pk=pk)
         commodities = Commodity.objects.filter(category=category)
         context = {
             'commodities': commodities,
@@ -36,8 +36,8 @@ class CategoryView(View):
 
 class CommodityView(View):
     def get(self, request, pk):
-        commodity = Commodity.objects.get(id=pk)
-        in_basket = bool(BasketItem.objects.filter(user=request.user, commodity=commodity))
+        commodity = get_object_or_404(Commodity, pk=pk)
+        in_basket = BasketItem.objects.filter(user=request.user, commodity=commodity).exists()
         context = {
             'commodity': commodity,
             'in_basket': in_basket,

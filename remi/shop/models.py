@@ -1,4 +1,5 @@
 from ast import Sub
+import re
 from unicodedata import category
 from wsgiref.simple_server import demo_app
 from django.db import models
@@ -57,9 +58,11 @@ class BasketItem(models.Model):
     Корзина \ заказ набор товаров, изменение статусов заказов, завершение.
     """
     user = models.ForeignKey(User,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             related_name='items')
     commodity = models.ForeignKey(Commodity,
-                                  on_delete=models.CASCADE)
+                                  on_delete=models.CASCADE,
+                                  related_name='items')
     quantity = models.PositiveIntegerField(default=1)
     is_ordered = models.BooleanField(default=False)
 
@@ -86,6 +89,9 @@ class Share(models.Model):
         return self.share
 
 class Order(models.Model):
+    """
+    Оформление заказа покупателя.
+    """
     user = models.ForeignKey(User, 
                              on_delete=models.CASCADE,
                              related_name='orders')

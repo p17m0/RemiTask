@@ -3,17 +3,18 @@
 {% for product in basket %}
     {{ product.commodity.name }}
     {% if basket %}
-    <form method="post" action="{% url 'shop:del_commodity' product.commodity.id %}">
+    <form action="{% url 'shop:del_commodity' product.commodity.id %}" method="POST">
         {% csrf_token %}
-        <button>
-            Удалить из корзины
-        </button>
+        <input type="hidden" name="_method" value="Удалить">
+        <input type="submit" value="Delete">
     </form >
     {% endif %}
 {% endfor %}
+{% if basket %}
 <a href="{% url 'shop:order' %}">
     <button>
         заказать
     </button>
 </a>
+{% endif %}
 {% endblock content %}
