@@ -20,7 +20,7 @@ class BasketView(View):
         }
         return render(request, 'shop/basket.html', context)
 
-    def delete(self, request, pk):
+    def post(self, request, pk):
         commodity = get_object_or_404(Commodity, pk=pk)
         BasketItem.objects.get(user=request.user, commodity=commodity).delete()
         return redirect('shop:basket')
