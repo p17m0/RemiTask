@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import generic, View
-from .models import *
-from .forms import *
+from .models import (
+    Catalog,
+    BasketItem,
+    Commodity,
+)
+from .forms import OrderForm
 
 
 class CatalogView(generic.ListView):
@@ -10,23 +14,16 @@ class CatalogView(generic.ListView):
 
 class BasketView(View):
     def get(self, request):
-        basket = Basket.objects.filter(user=request.user.id)
+        basket = BasketItem.objects.filter(user=request.user.id)
         context = {
             'basket': basket,
         }
         return render(request, 'shop/basket.html', context)
 
-class BasketAddView(View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         commodity = Commodity.objects.get(id=pk)
-        Basket.objects.create(user=request.user, commodity=commodity)
-        return redirect('shop:commodity', pk=pk)
-
-class BasketDelView(View):
-    def get(self, request, pk):
-        commodity = Commodity.objects.get(id=pk)
-        Basket.objects.get(user=request.user, commodity=commodity).delete()
-        return redirect('shop:basket', pk=pk)
+        BasketItem.objects.get(user=request.user, commodity=commodity).delete()
+        return redirect('shop:basket')
 
 class CategoryView(View):
     def get(self, request, pk):
@@ -40,10 +37,32 @@ class CategoryView(View):
 class CommodityView(View):
     def get(self, request, pk):
         commodity = Commodity.objects.get(id=pk)
-        in_basket = bool(Basket.objects.filter(user=request.user, commodity=commodity))
+        in_basket = bool(BasketItem.objects.filter(user=request.user, commodity=commodity))
         context = {
             'commodity': commodity,
             'in_basket': in_basket,
         }
         return render(request, 'shop/commodity.html', context)
 
+    def post(self, request, pk):
+        commodity = Commodity.objects.get(id=pk)
+        BasketItem.objects.create(user=request.user, commodity=commodity)
+        return redirect('shop:commodity', pk=pk)
+
+class OrderView(View):
+    def get(self, request):
+        basketitems = BasketItem.objects.filter(user=request.user)
+        form = OrderForm
+        context = {
+            'form': form,
+            'basketitems': basketitems,
+        }
+        return render(request, 'shop/order.html', context)
+    
+    def post(self, request):
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.save()
+            return redirect('shop:order')
+        return redirect('shop:order')

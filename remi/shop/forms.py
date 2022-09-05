@@ -1,9 +1,9 @@
 from django import forms
 
-from .models import Basket
+from .models import BasketItem, Order
 
 
-class BasketForm(forms.ModelForm):
+class OrderForm(forms.ModelForm):
     class Meta:
-        model = Basket
-        fields = ('commodity',)
+        model = Order
+        fields = '__all__'

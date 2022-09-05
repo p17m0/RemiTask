@@ -2,6 +2,8 @@
 {% block content %}
 {% for catalog in object_list %}
     <a href="{% url 'shop:category' catalog.id %}">{{ catalog.category }}</a>
+</hr>
+    <a>{{ catalog.subcategories.subcategory_name }}</a>
 {% endfor %}
 <a href="{% url 'shop:basket' %}">
     Корзина

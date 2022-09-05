@@ -1,5 +1,6 @@
 from ast import Sub
 from unicodedata import category
+from wsgiref.simple_server import demo_app
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -51,7 +52,7 @@ class Commodity(models.Model):
     def __str__(self):
         return self.name
 
-class Basket(models.Model):
+class BasketItem(models.Model):
     """
     Корзина \ заказ набор товаров, изменение статусов заказов, завершение.
     """
@@ -59,6 +60,8 @@ class Basket(models.Model):
                              on_delete=models.CASCADE)
     commodity = models.ForeignKey(Commodity,
                                   on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    is_ordered = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
@@ -67,7 +70,7 @@ class Basket(models.Model):
         ]
 
     def __str__(self):
-        return self.user
+        return self.commodity.name
 
 class Share(models.Model):
     """
@@ -76,9 +79,20 @@ class Share(models.Model):
     """
     share = models.IntegerField()
     condition = models.CharField(max_length=40)
-    good = models.ForeignKey(Commodity,
+    commodity = models.ForeignKey(Commodity,
                              on_delete=models.CASCADE)
-
 
     def __str__(self):
         return self.share
+
+class Order(models.Model):
+    basketitem = models.ForeignKey(BasketItem,
+                                   on_delete=models.CASCADE,
+                                   related_name='items')
+    address = models.CharField(max_length=20)
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.address
+

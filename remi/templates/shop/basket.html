@@ -3,9 +3,17 @@
 {% for product in basket %}
     {{ product.commodity.name }}
     {% if basket %}
-    <button>
-        <a href="{% url 'shop:del_commodity' product.commodity.id %}">Удалить из корзины</a>
-    </button>
+    <form method="post" action="{% url 'shop:del_commodity' product.commodity.id %}">
+        {% csrf_token %}
+        <button>
+            Удалить из корзины
+        </button>
+    </form >
     {% endif %}
 {% endfor %}
+<a href="{% url 'shop:order' %}">
+    <button>
+        заказать
+    </button>
+</a>
 {% endblock content %}

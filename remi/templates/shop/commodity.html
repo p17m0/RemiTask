@@ -2,8 +2,11 @@
 {% block content %}
 {{ commodity.name }}
     {% if not in_basket %}
-    <button>
-        <a href="{% url 'shop:add_commodity' commodity.id %}">Добавить в корзину</a>
-    </button>
+    <form method="post" action="{% url 'shop:add_commodity' commodity.id %}">
+        {% csrf_token %}
+        <button>
+            Добавить в корзину
+        </button>
+    </form>
     {% endif %}
 {% endblock content %}

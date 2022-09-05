@@ -1,6 +1,10 @@
 from unicodedata import category
 from django.contrib import admin
-from .models import Catalog, Subcategory, Commodity, Basket
+from .models import (Catalog,
+                     Subcategory,
+                     Commodity,
+                     BasketItem,
+                     Order)
 
 @admin.register(Catalog)
 class CatalogAdmin(admin.ModelAdmin):
@@ -20,8 +24,14 @@ class CommodityAdmin(admin.ModelAdmin):
     list_filter = ('category', 'price', 'name')
     search_fields = ('name',)
 
-@admin.register(Basket)
-class BasketAdmin(admin.ModelAdmin):
-    list_display = ('user', 'commodity')
+@admin.register(BasketItem)
+class BasketItemAdmin(admin.ModelAdmin):
+    list_display = ('user', 'commodity', 'quantity')
     list_filter = ('user', )
     search_fields = ('user', )
+
+@admin.register(Order)
+class BasketAdmin(admin.ModelAdmin):
+    list_display = ('basketitem', 'created', 'address')
+    list_filter = ('created', )
+    search_fields = ('created', )
